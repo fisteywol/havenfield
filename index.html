@@ -331,9 +331,111 @@
             border-radius: 4px;
             margin-bottom: 1.5rem;
         }
+
+        .site-warning-fixed{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .6rem .9rem;
+  background: linear-gradient(90deg, rgba(220,38,38,0.12), rgba(29,78,216,0.08));
+  border-bottom: 1px solid rgba(220,38,38,0.35);
+  color: #111827;
+  font-family: system-ui, sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  backdrop-filter: blur(4px);
+  animation: bannerPulse 3s infinite ease-in-out;
+}
+
+.swf-icon{
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dc2626;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+}
+
+.swf-text{
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.swf-sub{
+  font-size: .78rem;
+  color: rgba(17,24,39,0.6);
+}
+
+.swf-dismiss{
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: rgba(17,24,39,0.7);
+  padding: .25rem;
+  border-radius: .35rem;
+}
+
+.swf-dismiss:hover{
+  background: rgba(0,0,0,0.04);
+  color: rgba(17,24,39,0.95);
+}
+
+@media (max-width: 640px){
+  .swf-sub{ display: none; }
+}
+
+/* soft floating pulse */
+@keyframes bannerPulse{
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-1px); }
+}
+
+/* Push the page content downward so the banner doesn't cover it (optional) */
+body {
+  padding-top: 58px; /* adjust if your header is taller */
+}
+
     </style>
 </head>
 <body>
+    <div class="site-warning-fixed" role="status" aria-live="polite" aria-label="Site under construction">
+  <div class="swf-icon" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path fill="currentColor" d="M1 21h22L12 2 1 21zM12 16a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+    </svg>
+  </div>
+  <div class="swf-text">
+    <strong>Under construction</strong>
+    <span class="swf-sub">Some features may not work yet.</span>
+  </div>
+  <button class="swf-dismiss" aria-label="Dismiss warning">✕</button>
+</div>
+
+<script>
+document.addEventListener('click', function(e){
+  if (e.target.closest && e.target.closest('.swf-dismiss')) {
+    const bar = e.target.closest('.site-warning-fixed');
+    bar.style.maxHeight = bar.scrollHeight + 'px';
+    requestAnimationFrame(() => {
+      bar.style.transition = 'max-height 300ms ease, opacity 300ms ease';
+      bar.style.maxHeight = '0';
+      bar.style.opacity = '0';
+      setTimeout(() => bar.remove(), 350);
+    });
+  }
+});
+</script>
+
     <header>
         <div class="header-content">
             <h1>Havenfield Secondary School</h1>
